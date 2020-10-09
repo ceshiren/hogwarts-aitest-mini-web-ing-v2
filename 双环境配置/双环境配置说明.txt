@@ -1,0 +1,19 @@
+1.在项目根目录下新建两个文件
+    .env.development    (配置开发环境下的地址)
+    .env.production     (配置生产环境下的地址)
+
+2.文件内容如下
+    .env.development中：
+        NODE_ENV = development
+        VUE_APP_URL = http://stuq.ceshiren.com:8089/ （开发环境下地址）
+    
+    .env.production中：
+        NODE_ENV = production
+        VUE_APP_URL = http://api.dev.testing-studio.com （生产环境下地址）
+
+3.修改src/api/http.js中的部分内容
+    在 import axios from 'axios' 下新增语句：
+        var root = process.env.VUE_APP_URL
+
+    修改 baseURL:'http://stuq.ceshiren.com:8089/' 为：
+        baseURL: root
