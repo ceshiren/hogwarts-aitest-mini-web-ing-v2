@@ -6,6 +6,10 @@
                 <v-tab @click="$router.push({name:'Task'})">任务管理</v-tab>
                 <v-tab @click="$router.push({name:'Jenkins'})">Jenkins管理</v-tab>
                 <v-tab @click="$router.push({name:'Report'})">报告管理</v-tab>
+
+                <v-spacer></v-spacer>
+                <v-btn text @click="logout()">退出</v-btn>
+
             </v-tabs>
         </template>
 
@@ -93,8 +97,8 @@
             <template v-slot:[`item.operate`] = "{item}">
             <v-btn color="primary" text small @click="editCase(item)">编辑</v-btn>
             <v-btn color="error" text small @click="deleteCase(item)">删除</v-btn>
-                    
-                
+
+
             </template>
             </v-data-table>
         </template>
@@ -164,7 +168,7 @@ export default {
                 }
                 this.$api.cases.creatCaseByText(post_data).then(res=>{
                     console.log(res)
-                })   
+                })
             }else if(this.addItem.type=='文件'){
                 let post_data = new FormData()
                 post_data.append('caseFile',this.addItem.file)
@@ -243,7 +247,13 @@ export default {
                     this.desserts = res.data.data.data
                 })
             })
+        },
+        logout(){
+            this.$api.user.logout().then(res=>{
+                this.$router.push('/')
+            })
         }
+
 
     },
 }
