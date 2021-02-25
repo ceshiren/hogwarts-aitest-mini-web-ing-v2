@@ -228,7 +228,15 @@ export default {
                 }
             }
             this.$api.cases.createTask(post_data).then(res=>{
-                console.log(res)
+                if(res.data.resultCode==1){
+                    this.$notify({
+                        title:'成功',
+                        message:'生成成功',
+                        type:'success'
+                    })
+                    this.$router.push({name:'Task'})
+                    this.close()
+                }
             })
         },
         deleteCase(item){
