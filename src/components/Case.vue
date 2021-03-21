@@ -6,7 +6,11 @@
                 <v-tab @click="$router.push({name:'Task'})">任务管理</v-tab>
                 <v-tab @click="$router.push({name:'Jenkins'})">Jenkins管理</v-tab>
                 <v-tab @click="$router.push({name:'Report'})">报告管理</v-tab>
+                <v-spacer></v-spacer>
+                <v-btn text @click="logout()">退出</v-btn>    
             </v-tabs>
+
+                   
         </template>
 
         <v-dialog
@@ -225,6 +229,19 @@ export default {
             }
             this.$api.cases.createTask(post_data).then(res=>{
                 console.log(res)
+                //判断resultCode
+                if(res.data.resultCode==1){
+                    //提示信息
+                    this.$notify({
+                        title: '成功',
+                        message: '生成成功',
+                        type: 'success'
+                    })
+                    //自动跳转
+                    this.$router.push({name:'Task'})
+                    this.close()
+                }
+
             })
         },
         deleteCase(item){
@@ -243,6 +260,14 @@ export default {
                     this.desserts = res.data.data.data
                 })
             })
+        },
+        logout(){
+           this.$api.user.logout().then(res=>{
+              this.$router.push('/')
+           })
+        },
+        close(){
+            this.creatdTask = false
         }
 
     },
