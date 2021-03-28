@@ -95,10 +95,8 @@
                 class="elevation-1"
             >
             <template v-slot:[`item.operate`] = "{item}">
-            <v-btn color="primary" text small @click="editCase(item)">编辑</v-btn>
-            <v-btn color="error" text small @click="deleteCase(item)">删除</v-btn>
-                    
-                
+                <v-btn color="primary" text small @click="editCase(item)">编辑</v-btn>
+                <v-btn color="error" text small @click="deleteCase(item)">删除</v-btn>
             </template>
             </v-data-table>
         </template>

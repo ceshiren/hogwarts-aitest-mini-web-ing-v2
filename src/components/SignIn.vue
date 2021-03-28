@@ -1,6 +1,6 @@
 <template>
     <div class="login-form">
-       <h1>登录</h1> 
+       <h1>登录</h1>
        <v-text-field label="用户名" v-model="username"></v-text-field>
        <v-text-field label="密码"  v-model="password" type="password"></v-text-field>
        <v-btn color="primary" @click="login()"> 登录</v-btn>
@@ -33,7 +33,7 @@ export default {
             })
         }
     },
-    
+
 }
 </script>
 

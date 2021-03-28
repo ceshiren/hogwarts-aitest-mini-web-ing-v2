@@ -54,10 +54,10 @@ const project = {
         return axios.put('/task',params)
     },
     getAllure(params){
-        return axios.put('/report/allureReport/'+params.taskId,params)
+        return axios.get('/report/allureReport/'+params.taskId,params)
     },
     getCaseCount(params){
-        return axios.get('/report/taskByCaseCount/')
+        return axios.get('/report/taskByCaseCount/',{params})
     }
 }
 
