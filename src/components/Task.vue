@@ -42,13 +42,67 @@
 
 <script>
 export default {
-    data() {
+    data(){
         return {
-            
+            currentPage:1,
+            pageLength:0,
+            rows:'',
+            editDialog:false,
+            editId:'',
+            taskName:'',
+            remark:'',
+            taskDialog:'',
+            instanceNotify:'',
+            headers:[
+                {text:'id',value:'id'},
+                {text:'名称',value:'name'},
+                {text:'JenkinsID',value:'testJenkinsId'},
+                {text:'用例数量',value:'caseCount'},
+                {text:'执行脚本',value:'shortTestCommand'},
+                {text:'执行状态',value:'status'},
+                {text:'操作',value:'action'}
+            ],
+            tableData:[
+                {
+                    id:1,
+                    name:'task'
+                },
+                {
+                    id:2,
+                    name:'task2'
+                }
+            ]
         }
     },
+    created(){
+        this.getTaskList()
+    },
     methods: {
-        
+
+        getTaskList(){
+            let post_data = {
+                pageNum:this.currentPage,
+                pageSize:10
+            }
+            this.$api.project.getTaskList(post_data).then(res=>{
+                console.log(res)
+                this.tableData = res.data.data.data
+                this.rows = res.data.data.recordsTotal
+                this.pageLength = Math.ceil(this.rows/10)
+            })
+        },
+        getAllure(item){
+
+            let post_data = {
+                taskId:item.id,
+            }
+
+            this.$api.project.getAllure(post_data).then(res=>{
+                console.log(res)
+                window.open(res.data.data.allureReportUrl,"_blank")
+            })
+        }
+
     },
 }
 </script>
