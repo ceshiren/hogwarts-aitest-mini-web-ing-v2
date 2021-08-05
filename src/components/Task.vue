@@ -25,8 +25,10 @@
             </template>
 
             <template v-slot:[`item.action`] = "{item}">
-                <v-btn color="success" small @click="editCase(item)">编辑</v-btn>
-                <v-btn color="error" small @click="deleteCase(item)">删除</v-btn>
+                <v-btn v-if="item.status==1" color="primary" small @click="doTask(item)">执行任务</v-btn>
+                <v-btn v-else disabled >执行任务</v-btn>
+                <v-btn color="success" small @click="editTask(item)">编辑</v-btn>
+                <v-btn color="error" small @click="deleteTask(item)">删除</v-btn>
             </template>
         </v-data-table>
         <v-pagination
@@ -37,6 +39,35 @@
                 @input="getTaskList()"
                 :total-visible="7"
         ></v-pagination>
+
+        <v-dialog
+                v-model="editDialog"
+                width="600px"
+        >
+            <template v-slot:activator="{ on, attrs }">
+            </template>
+            <v-card>
+                <v-card-title>
+                    编辑任务
+                </v-card-title>
+                <v-card-text>
+                    <v-text-field label="任务名称" v-model="taskName"></v-text-field>
+                    <v-text-field label="备注" v-model="remark"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                            color="primary"
+                            @click="saveEdit()"
+                    >
+                        确认
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
     </div>
 </template>
 
@@ -101,6 +132,121 @@ export default {
                 console.log(res)
                 window.open(res.data.data.allureReportUrl,"_blank")
             })
+        },
+        editTask(item){
+
+            this.taskName = item.name
+            this.remark = item.remark
+            this.editId = item.id
+
+            this.editDialog = true
+        },
+        saveEdit(){
+
+            let post_data = {
+                id:this.editId,
+                name:this.taskName,
+                remark: this.remark
+            }
+
+            this.$api.project.editTask(post_data).then(res=>{
+
+                if(this.instanceNotify){
+                    this.instanceNotify.close()
+                }
+
+                this.instanceNotify = this.$notify({
+                    title:'成功',
+                    message:'修改成功',
+                    type: 'success'
+                })
+
+                this.getTaskList()
+                this.close()
+
+            })
+        },
+
+        close(){
+            this.editDialog = false
+            this.taskName = ''
+            this.remark = ''
+        },
+
+        deleteTask(item){
+
+            let post_data = {
+                id:item.id
+            }
+
+            this.$api.project.deleteTask(post_data).then(res=>{
+
+                if(res.data.resultCode == 1){
+                    if(this.instanceNotify){
+                        this.instanceNotify.close()
+                    }
+
+                    this.instanceNotify = this.$notify({
+                        title:'成功',
+                        message:'删除成功',
+                        type: 'success'
+                    })
+
+                    this.getTaskList()
+                }else {
+                    if(this.instanceNotify){
+                        this.instanceNotify.close()
+                    }
+
+                    this.instanceNotify = this.$notify({
+                        title:'失败',
+                        message:'删除失败',
+                        type: 'success'
+                    })
+                }
+
+
+
+            })
+        },
+        doTask(item){
+
+            let post_data = {
+                taskId:item.id
+            }
+
+            this.$api.project.doTask(post_data).then(res=>{
+
+                if(res.data.resultCode == 1){
+
+                    this.getTaskList()
+                    if(this.instanceNotify){
+                        this.instanceNotify.close()
+                    }
+
+                    this.instanceNotify = this.$notify({
+                        title:'成功',
+                        message:'执行成功',
+                        type: 'success'
+                    })
+
+                }else {
+                    if(this.instanceNotify){
+                        this.instanceNotify.close()
+                    }
+
+                    this.instanceNotify = this.$notify({
+                        title:'失败',
+                        message:'执行失败',
+                        type: 'success'
+                    })
+                }
+
+
+
+            })
+
+
         }
 
     },
