@@ -21,7 +21,10 @@
                 <div v-if="item.status==0">无效</div>
                 <div v-if="item.status==1">新建</div>
                 <div v-if="item.status==2">执行中</div>
-                <div v-if="item.status==3"><a @click="getAllure(item)">执行完成</a></div>
+
+                <div v-if="item.status==3"><router-link :to="{path:'allureReport',query:{taskId:item.id}}">查看报告</router-link></div>
+
+                <!--<div v-if="item.status==3"><a @click="getAllure(item)">执行完成</a></div>-->
             </template>
 
             <template v-slot:[`item.action`] = "{item}">

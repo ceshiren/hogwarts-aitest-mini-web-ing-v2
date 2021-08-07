@@ -7,6 +7,7 @@ import Case from '../components/Case.vue'
 import Task from '../components/Task.vue'
 import Jenkins from '../components/Jenkins.vue'
 import Report from '../components/Report.vue'
+import AllureReport from '../components/AllureReport.vue'
 
 
 
@@ -49,6 +50,12 @@ const routes = [
     name:'Report',
     component:Report
   },
+  {
+    path:'/allureReport',
+    name:'AllureReport',
+    component:AllureReport
+  },
+
 ]
 
 const router = new VueRouter({
