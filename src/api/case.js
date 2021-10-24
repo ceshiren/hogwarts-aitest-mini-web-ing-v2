@@ -22,6 +22,9 @@ const cases = {
     },
     createTask(params){
         return axios.post('/task/',params)
+    },
+    executeCase(params){
+        return axios.post('/testCase/run',params)
     }
 }
 export default cases
