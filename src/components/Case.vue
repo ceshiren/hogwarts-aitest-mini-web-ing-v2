@@ -93,8 +93,8 @@
             <template v-slot:[`item.operate`] = "{item}">
             <v-btn color="primary" text small @click="editCase(item)">编辑</v-btn>
             <v-btn color="error" text small @click="deleteCase(item)">删除</v-btn>
-                    
-                
+
+
             </template>
             </v-data-table>
         </template>
@@ -145,16 +145,21 @@ export default {
         }
     },
     created(){
-        let post_data = {
-            pageNum:1,
-            pageSize:10
-        }
-        this.$api.cases.getList(post_data).then(res=>{
-            console.log(res)
-            this.desserts = res.data.data.data
-        })
+        this.listCase()
     },
     methods: {
+
+        listCase(){
+            let post_data = {
+                pageNum:1,
+                pageSize:10
+            }
+            this.$api.cases.getList(post_data).then(res=>{
+                console.log(res)
+                this.desserts = res.data.data.data
+            })
+        },
+
         addCase(){
             if(this.addItem.type=='文本'){
                 let post_data = {
@@ -164,7 +169,8 @@ export default {
                 }
                 this.$api.cases.creatCaseByText(post_data).then(res=>{
                     console.log(res)
-                })   
+                    this.listCase()
+                })
             }else if(this.addItem.type=='文件'){
                 let post_data = new FormData()
                 post_data.append('caseFile',this.addItem.file)
@@ -172,18 +178,12 @@ export default {
                 post_data.append('caseName',this.addItem.name)
                 this.$api.cases.creatCaseByFile(post_data).then(res=>{
                     console.log(res)
+                    this.listCase()
                 })
             }
             console.log(this.addItem)
             this.addDialog = false
-            let post_data = {
-                pageNum:1,
-                pageSize:10
-            }
-            this.$api.cases.getList(post_data).then(res=>{
-                console.log(res)
-                this.desserts = res.data.data.data
-            })
+
         },
         editCase(item){
             this.editDialog = true
@@ -199,14 +199,7 @@ export default {
             this.$api.cases.editCase(post_data).then(res=>{
                 console.log(res)
                 this.editDialog = false
-                let post_data = {
-                    pageNum:1,
-                    pageSize:10
-                }
-                this.$api.cases.getList(post_data).then(res=>{
-                    console.log(res)
-                    this.desserts = res.data.data.data
-                })
+                this.listCase()
             })
         },
         newTask(){
@@ -225,6 +218,12 @@ export default {
             }
             this.$api.cases.createTask(post_data).then(res=>{
                 console.log(res)
+
+                if(res.data.resultCode==1){
+                    this.$router.push({name:'Task'})
+                    this.creatdTask = false
+                }
+
             })
         },
         deleteCase(item){
@@ -234,14 +233,7 @@ export default {
             }
             this.$api.cases.deleteCase(post_data).then(res=>{
                 console.log(res)
-                let post_data = {
-                    pageNum:1,
-                    pageSize:10
-                }
-                this.$api.cases.getList(post_data).then(res=>{
-                    console.log(res)
-                    this.desserts = res.data.data.data
-                })
+                this.listCase()
             })
         }
 
