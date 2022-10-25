@@ -20,9 +20,6 @@ const cases = {
     editCase(params){
         return axios.put('/testCase/',params)
     },
-    createTask(params){
-        return axios.post('/task/',params)
-    },
     executeCase(params){
         return axios.post('/testCase/run',params)
     }
