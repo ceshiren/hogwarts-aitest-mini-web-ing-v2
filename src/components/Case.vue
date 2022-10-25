@@ -206,11 +206,7 @@
             }
         },
         created() {
-            let post_data = {
-                pageNum: 1,
-                pageSize: 10
-            }
-            this.$api.cases.getList(post_data).then(res => {
+            this.$api.cases.getList().then(res => {
                 console.log(res)
                 this.desserts = res.data.data.data
             })
