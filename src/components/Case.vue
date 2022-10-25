@@ -3,6 +3,8 @@
         <template>
             <v-tabs :value="0" background-color="primary">
                 <v-tab @click="$router.push({name:'Case'})">用例管理</v-tab>
+                <v-spacer></v-spacer>
+                <v-btn text @click="logout()">退出</v-btn>
             </v-tabs>
         </template>
 
@@ -332,6 +334,11 @@
             deleteParams(item) {
                 let index = this.executeItem.params.indexOf(item);
                 this.executeItem.params.splice(index,1);
+            },
+            logout(){
+                this.$api.user.logout().then(res=>{
+                    this.$router.push('/')
+                })
             }
 
         },
