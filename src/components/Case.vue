@@ -152,9 +152,9 @@
                 },
                 addItem: {
                     name: '',
-                    type: '',
+                    type: '文本',
                     data: '',
-                    file: '',
+                    file: null,
                     remark: ''
                 },
                 selected: [],
