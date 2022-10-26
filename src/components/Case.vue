@@ -264,14 +264,7 @@
                 }
                 this.$api.cases.deleteCase(post_data).then(res => {
                     console.log(res)
-                    let post_data = {
-                        pageNum: 1,
-                        pageSize: 10
-                    }
-                    this.$api.cases.getList(post_data).then(res => {
-                        console.log(res)
-                        this.desserts = res.data.data.data
-                    })
+                    this.getCaseList()
                 })
             },
             //打开执行测试的弹窗
