@@ -206,12 +206,15 @@
             }
         },
         created() {
-            this.$api.cases.getList().then(res => {
-                console.log(res)
-                this.desserts = res.data.data.data
-            })
+            this.getCaseList();
         },
         methods: {
+            getCaseList() {
+                this.$api.cases.getList().then(res => {
+                    console.log(res)
+                    this.desserts = res.data.data
+                })
+            },
             addCase() {
                 if (this.addItem.type == '文本') {
                     let post_data = {
@@ -221,6 +224,7 @@
                     }
                     this.$api.cases.creatCaseByText(post_data).then(res => {
                         console.log(res)
+                        this.getCaseList();
                     })
                 } else if (this.addItem.type == '文件') {
                     let post_data = new FormData()
@@ -229,18 +233,11 @@
                     post_data.append('caseName', this.addItem.name)
                     this.$api.cases.creatCaseByFile(post_data).then(res => {
                         console.log(res)
+                        this.getCaseList();
                     })
                 }
                 console.log(this.addItem)
                 this.addDialog = false
-                let post_data = {
-                    pageNum: 1,
-                    pageSize: 10
-                }
-                this.$api.cases.getList(post_data).then(res => {
-                    console.log(res)
-                    this.desserts = res.data.data.data
-                })
             },
             editCase(item) {
                 this.editDialog = true
@@ -256,14 +253,7 @@
                 this.$api.cases.editCase(post_data).then(res => {
                     console.log(res)
                     this.editDialog = false
-                    let post_data = {
-                        pageNum: 1,
-                        pageSize: 10
-                    }
-                    this.$api.cases.getList(post_data).then(res => {
-                        console.log(res)
-                        this.desserts = res.data.data.data
-                    })
+                    this.getCaseList();
                 })
             },
 
